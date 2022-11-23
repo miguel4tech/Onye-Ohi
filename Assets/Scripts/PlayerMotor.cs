@@ -7,6 +7,9 @@ public class PlayerMotor : MonoBehaviour
     private const float LANE_DISTANCE = 3.0f;
     private const float TURN_SPEED = 0.05f;
 
+    //
+    private bool isRunning = false;
+
     // Animation
     private Animator anim;
     // Movement
@@ -25,6 +28,9 @@ public class PlayerMotor : MonoBehaviour
 
     private void Update() 
     {
+        if(!isRunning)
+            return;
+
         // Gather input on where we should be.
         if(MobileInput.Instance.SwipeLeft)
             MoveLane(false);
@@ -56,6 +62,12 @@ public class PlayerMotor : MonoBehaviour
                 anim.SetTrigger("Jump");
                 verticalVelocity = jumpForce;
             }
+            else if(MobileInput.Instance.SwipeDown)
+            {
+                // Slide
+                StartSliding();
+                Invoke("StopSliding", 1.0f);
+            }
         }
         else
         {
@@ -84,6 +96,20 @@ public class PlayerMotor : MonoBehaviour
 
     }
 
+    private void StartSliding()
+    {
+        anim.SetBool("Sliding", true);
+        controller.height /= 2;
+        controller.center = new Vector3(controller.center.x, controller.center.y / 2, controller.center.z);
+    }
+
+    private void StopSliding()
+    {
+        anim.SetBool("Sliding", false);
+        controller.height *= 2;
+        controller.center = new Vector3(controller.center.x, controller.center.y * 2, controller.center.z);
+    }
+
     private void MoveLane(bool goingRight)
     {
         desiredLane += (goingRight) ? 1 : -1;
@@ -96,5 +122,26 @@ public class PlayerMotor : MonoBehaviour
         Debug.DrawRay(groundRay.origin, groundRay.direction, Color.cyan, 1.0f);
 
         return Physics.Raycast(groundRay, 0.2f + 0.1f);
+    }
+
+    public void StartRunning()
+    {
+        isRunning = true;
+        anim.SetTrigger("StartRunning");
+    }
+
+    private void Crash()
+    {
+        anim.SetTrigger("Death");
+        isRunning = false;
+    }
+    private void OnControllerColliderHit(ControllerColliderHit hit) 
+    {
+        switch(hit.gameObject.tag)
+        {
+            case "Obstacle":
+                Crash();
+            break;
+        }
     }
 }

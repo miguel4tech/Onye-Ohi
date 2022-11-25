@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro; 
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -36,4 +36,13 @@ public class GameManager : MonoBehaviour
         coinText.text = coinScore.ToString();
         modifierText.text = modifierScore.ToString();
     }
+
+    //Play Button when Obi Dies (Button to restart game)
+
+    public void OnPlayButton()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+    }
+
+
 }

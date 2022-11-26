@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     private const int COIN_SCORE_AMOUNT = 5;
     public static GameManager Instance { set; get; }
 
+    public bool IsDead { set; get; }
     private bool isGameStarted = false;
     private PlayerMotor motor;
 
@@ -17,16 +18,27 @@ public class GameManager : MonoBehaviour
     private float score, coinScore,modifierScore;
     private int lastScore;
 
+    // Death Menu
+    public TextMeshProUGUI deadScoreText, deadCoinText;
+    private GameObject deathMenu;
+
     private void Awake() 
     {
         Instance = this;
         modifierScore = 1;
         motor = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMotor>();
+        deathMenu = GameObject.FindGameObjectWithTag("DeathMenu");
 
         scoreText.text = "Score: " + score.ToString("0");
         coinText.text = "Coin Score: " + coinScore.ToString("0");
         modifierText.text = "Speed: " + modifierScore.ToString("0.0"); 
     }
+    
+    private void Start() 
+    {    
+        deathMenu.SetActive(false);
+    }
+
     private void Update() 
     {
         if(MobileInput.Instance.Tap && !isGameStarted)
@@ -35,7 +47,7 @@ public class GameManager : MonoBehaviour
             motor.StartRunning();
         }
 
-        if(isGameStarted)
+        if(isGameStarted && !IsDead)
         {
             // Bump the score up            
             score += (Time.deltaTime * modifierScore);
@@ -61,11 +73,21 @@ public class GameManager : MonoBehaviour
         modifierText.text = "Speed: " + modifierScore.ToString("0.0");
     }
 
-    //Play Button when Obi Dies (Button to restart game)
+    // Play Button when Obi Dies (Button to restart game)  
 
     public void OnPlayButton()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+        deathMenu.SetActive(false);
+    }
+
+    public void OnDeath()
+    {
+        IsDead = true;
+        deadScoreText.text = "Score: " + score.ToString("0");
+        deadCoinText.text = "Coins: " + coinScore.ToString("0");
+        
+        deathMenu.SetActive(true);
     }
 
 

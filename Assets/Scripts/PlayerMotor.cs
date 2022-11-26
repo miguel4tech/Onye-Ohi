@@ -14,7 +14,7 @@ public class PlayerMotor : MonoBehaviour
     private Animator anim;
     // Movement
     private CharacterController controller;
-    private float jumpForce = 4.0f;
+    private float jumpForce = 4.5f;
     private float gravity = 12.0f;
     private float verticalVelocity;
     private int desiredLane = 1; // 0 = Left, 1 = Midle, 2 = Right
@@ -148,6 +148,7 @@ public class PlayerMotor : MonoBehaviour
     {
         anim.SetTrigger("Death");
         isRunning = false;
+        GameManager.Instance.OnDeath();
     }
     private void OnControllerColliderHit(ControllerColliderHit hit) 
     {

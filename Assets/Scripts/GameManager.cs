@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro; 
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -60,4 +60,13 @@ public class GameManager : MonoBehaviour
         modifierScore = 1.0f + modifierAmount;
         modifierText.text = "Speed: " + modifierScore.ToString("0.0");
     }
+
+    //Play Button when Obi Dies (Button to restart game)
+
+    public void OnPlayButton()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+    }
+
+
 }

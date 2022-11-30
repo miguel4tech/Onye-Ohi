@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
         {
             isGameStarted = true;
             motor.StartRunning();
+            FindObjectOfType<GlacierSpawner>().IsScrolling = true;
         }
 
         if(isGameStarted && !IsDead)
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour
     public void OnDeath()
     {
         IsDead = true;
+        FindObjectOfType<GlacierSpawner>().IsScrolling = false;
         deadScoreText.text = "Score: " + score.ToString("0");
         deadCoinText.text = "Coins: " + coinScore.ToString("0");
         

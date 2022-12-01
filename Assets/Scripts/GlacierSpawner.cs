@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GlacierSpawner : MonoBehaviour
 {
-    private const float DISTANCE_TO_RESPAWN = 15.0f;
+    private const float DISTANCE_TO_RESPAWN = 50.0f;
 
     public float scrollSpeed = -2f;
     public float totalLength;

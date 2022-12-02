@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
             isGameStarted = true;
             motor.StartRunning();
             FindObjectOfType<GlacierSpawner>().IsScrolling = true;
+            FindObjectOfType<CameraMotor>().IsMoving = true;
         }
 
         if(isGameStarted && !IsDead)

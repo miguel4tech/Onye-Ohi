@@ -9,12 +9,12 @@ public class MainMenuFunction : MonoBehaviour
 
     public void PlayGame()
     {
-        //buttonPress.Play();
+        buttonPress.Play();
         SceneManager.LoadScene(2);
     }
     public void ExitGame()
     {
-        //buttonPress.Play();
+        buttonPress.Play();
         SceneManager.LoadScene(1);
     }
 }

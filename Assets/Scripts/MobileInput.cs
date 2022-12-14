@@ -46,7 +46,7 @@ public class MobileInput : MonoBehaviour
             if(Input.touches[0].phase == TouchPhase.Began)
             {
                 tap = true;
-                startTouch = swipeDelta = Vector2.zero;
+                startTouch = Input.mousePosition;
             }
             else if(Input.touches[0].phase == TouchPhase.Ended || Input.touches[0].phase == TouchPhase.Canceled)
             {
@@ -96,7 +96,7 @@ public class MobileInput : MonoBehaviour
                     swipeUp = true;
             }
 
-            startTouch = swipeDelta = Vector2.zero;
+            startTouch = swipeDelta = Vector2.zero;  //Reset the touch input
         }
     }
 }

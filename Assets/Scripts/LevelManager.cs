@@ -16,7 +16,6 @@ public class LevelManager : MonoBehaviour
     private int amountOfActiveSegments;
     private int continiousSegments;
     private int currentSpawnZ;
-    private int currenLevel;
     private int y1, y2, y3;
 
     // List of pieces
@@ -33,15 +32,11 @@ public class LevelManager : MonoBehaviour
     [HideInInspector]
     public List<Segment> segments = new List<Segment>();
 
-    // Gameplay
-    private bool isMoving = false;
-
     private void Awake() 
     {
         Instance = this;
         cameraContainer = Camera.main.transform;
-        currentSpawnZ = 0;
-        currenLevel = 0;    
+        currentSpawnZ = 0;  
     }
 
     private void Start() 

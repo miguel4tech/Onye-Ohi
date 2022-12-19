@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro; 
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -11,10 +12,11 @@ public class GameManager : MonoBehaviour
 
     public bool IsDead { set; get; }
     private bool isGameStarted = false;
+    public static bool isGamePaused;
     private PlayerMotor motor;
 
     // UI and the UI fields
-    public TextMeshProUGUI scoreText, coinText, modifierText;
+    public TextMeshProUGUI scoreText, coinText, modifierText,hiscoreText;
     private float score, coinScore,modifierScore;
     private int lastScore;
 
@@ -29,9 +31,10 @@ public class GameManager : MonoBehaviour
         motor = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMotor>();
         deathMenu = GameObject.FindGameObjectWithTag("DeathMenu");
 
-        scoreText.text = "Score: " + score.ToString("0");
-        coinText.text = "Coin Score: " + coinScore.ToString("0");
-        modifierText.text = "Speed: " + modifierScore.ToString("0.0"); 
+        scoreText.text = score.ToString("0");
+        coinText.text = "" + coinScore.ToString("0");
+        modifierText.text = "X" + modifierScore.ToString("0.0"); 
+        hiscoreText.text = PlayerPrefs.GetInt("Highscore").ToString();
     }
     
     private void Start() 
@@ -51,12 +54,12 @@ public class GameManager : MonoBehaviour
 
         if(isGameStarted && !IsDead)
         {
-            // Bump the score up            
-            score += (Time.deltaTime * modifierScore);
-            if(lastScore != (int)score)
-            {
-                lastScore = (int)score;
-                scoreText.text = "Score: " + score.ToString("0");
+            //Bump up the score
+			lastScore = (int)score;
+			score += (Time.deltaTime * modifierScore);
+			if (lastScore == (int)score) 
+			{
+				scoreText.text = score.ToString ("0");
             }            
         }
     }
@@ -64,15 +67,15 @@ public class GameManager : MonoBehaviour
     public void GetCoin()
     {
         coinScore++;
-        coinText.text = "Coin Score: " + coinScore.ToString("0");
+        coinText.text = "" + coinScore.ToString("0");
         score += COIN_SCORE_AMOUNT;
-        scoreText.text = "Coin: " + score.ToString("0");
+        scoreText.text = "" + score.ToString("0");
     }
 
     public void UpdateModifier(float modifierAmount)
     {
         modifierScore = 1.0f + modifierAmount;
-        modifierText.text = "Speed: " + modifierScore.ToString("0.0");
+        modifierText.text = "X" + modifierScore.ToString("0.0");
     }
 
     // Play Button when Obi Dies (Button to restart game)  
@@ -91,7 +94,40 @@ public class GameManager : MonoBehaviour
         deadCoinText.text = "Coins: " + coinScore.ToString("0");
         
         deathMenu.SetActive(true);
+        //Checks if this is a highscore
+		if(score > PlayerPrefs.GetInt("Highscore"))
+		{
+			float s = score;
+			if(s % 1 == 0)
+				s += 1;
+			PlayerPrefs.SetInt("Highscore", (int)s); //Sets/Put current score as highscore
+		}
     }
 
+    public void Pause()
+    {
+        isGamePaused = true;
+        Time.timeScale = 0;
+    }
+    public void Resume()
+    {
+        isGamePaused = false;
+        Time.timeScale = 1;
+    }
+    public void RetryLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
+    }
+    public void LoadMenu()
+	{
+		Time.timeScale = 1f;
+		SceneManager.LoadScene ("MainMenu");
+	}
+    public void Quit()
+    {
+        print("Game Exit");
+        Application.Quit();
+    }
 
 }

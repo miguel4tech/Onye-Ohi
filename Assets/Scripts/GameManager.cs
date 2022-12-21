@@ -89,11 +89,11 @@ public class GameManager : MonoBehaviour
     public void OnDeath()
     {
         IsDead = true;
+        deathMenu.SetActive(true);
         FindObjectOfType<GlacierSpawner>().IsScrolling = false;
         deadScoreText.text = "Score: " + score.ToString("0");
         deadCoinText.text = "Coins: " + coinScore.ToString("0");
         
-        deathMenu.SetActive(true);
         //Checks if this is a highscore
 		if(score > PlayerPrefs.GetInt("Highscore"))
 		{

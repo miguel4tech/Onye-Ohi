@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerMotor : MonoBehaviour
 {
-    private const float LANE_DISTANCE = 3.0f;
+    #region  VARIABLES
+    private const float LANE_DISTANCE = 2.5f;
     private const float TURN_SPEED = 0.05f;
 
     //
@@ -14,7 +15,7 @@ public class PlayerMotor : MonoBehaviour
     private Animator anim;
     // Movement
     private CharacterController controller;
-    private float jumpForce = 4.5f;
+    private float jumpForce = 5f;
     private float gravity = 12.0f;
     private float verticalVelocity;
     private int desiredLane = 1; // 0 = Left, 1 = Midle, 2 = Right
@@ -25,7 +26,7 @@ public class PlayerMotor : MonoBehaviour
     private float speedIncreaseLastTick;
     private float speedIncreaseTime = 2.5f;
     private float speedIncreaseAmount = 0.1f;
-
+#endregion
     private void Start() 
     {
         speed = originalSpeed;
